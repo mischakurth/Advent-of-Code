@@ -1,4 +1,4 @@
-from collections import deque, defaultdict
+from collections import deque
 
 file_name = 'input.txt'
 with open(file_name) as f:
