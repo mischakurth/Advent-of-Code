@@ -52,8 +52,31 @@ class Solution:
 
         return dfs(start, False, False)
 
+    def memoized_paths(self, start, target):
+        mem = {}
+        def dfs(curr, seen_fft, seen_dac):
+            if curr == target:
+                mem[(curr, seen_fft, seen_dac)] = int(seen_fft and seen_dac)
+                return int(seen_fft and seen_dac)
+            count = 0
+            for next_device in self.data_map[curr]:
+                if (next_device, seen_fft or (next_device == "fft"), seen_dac or (next_device == "dac")) in mem:
+                    count += mem[(next_device, seen_fft or (next_device == "fft"), seen_dac or (next_device == "dac"))]
+                else:
+                    count += dfs(
+                        next_device,
+                        seen_fft or (next_device == "fft"),
+                        seen_dac or (next_device == "dac")
+                    )
+            mem[(curr, seen_fft, seen_dac)] = count
+            return count
+        return dfs(start, False, False)
+
+
+
 
 s = Solution(input_data_map)
 print('Lösung zu Teil 1:', s.count_paths('you', 'out', []))
-print('Lösung zu Teil 2:', s.memoized_count_paths('svr', 'out'))
+print('Lösung zu Teil 2, built in memoization:', s.memoized_count_paths('svr', 'out'))
+print('Lösung zu Teil 2, memoization map:', s.memoized_paths('svr', 'out'))
 # print('Lösung zu Teil 2:', s.count_paths_part_two_dfs())
