@@ -1,5 +1,6 @@
 .DS_Store
 input.txt
+test_input.txt
 .idea
 __init__.py
 
